@@ -3,15 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1A1A1A1B2A2A2A2B3B3B3B3B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */; };
 		1A1A1A1D2A2A2A2B3B3B3B3D /* IosTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */; };
-		1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
 		1A1A1A252A2A2A2B3B3B3B45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */; };
-		1A1A1A292A2A2A2B3B3B3B49 /* IosTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A282A2A2A2B3B3B3B48 /* IosTestAppTests.swift */; };
+		1A1A1A292A2A2A2B3B3B3B49 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,8 +141,9 @@
 		1A1A1A102A2A2A2B3B3B3B30 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					1A1A1A172A2A2A2B3B3B3B37 = {
 						CreatedOnToolsVersion = 15.1;
@@ -207,7 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A1A1A292A2A2A2B3B3B3B49 /* IosTestAppTests.swift in Sources */,
+				1A1A1A292A2A2A2B3B3B3B49 /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +259,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -276,6 +278,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -317,6 +320,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -328,6 +332,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -423,8 +428,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = 1A1A1A102A2A2A2B3B3B3B30 /* Project object */;
 }
-
