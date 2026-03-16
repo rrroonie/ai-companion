@@ -26,6 +26,13 @@ This folder contains a minimal SwiftUI iOS test application you can run on simul
 4. Trust the developer certificate on your iPhone if prompted.
 5. Press **⌘R** to build, install, and launch the app on your device.
 
+### Development team (local config)
+
+The development team for code signing is read from **`Config/Local.xcconfig`**, which is not checked in. On a fresh clone:
+
+1. Copy the example: `cp Config/Local.xcconfig.example Config/Local.xcconfig`
+2. Open `Config/Local.xcconfig` and set `DEVELOPMENT_TEAM` to your Apple team ID (Xcode → Signing & Capabilities → Team → right‑click team → Copy Team ID).
+
 ### Notes
 
 - The deployment target is set to iOS 17.0; adjust it in the project settings if needed to match your devices.

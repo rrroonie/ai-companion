@@ -36,6 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 # iOS / Xcode
+apps/ios-test/Config/Local.xcconfig
 xcuserdata/
 *.xcuserstate
 DerivedData/
