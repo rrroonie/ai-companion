@@ -33,6 +33,7 @@
 		1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A1A1A262A2A2A2B3B3B3B46 /* IosTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IosTestAppTests.swift; sourceTree = "<group>"; };
 		1A1A1A3A2A2A2A2B3B3B3B5A /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
+		66F917CA2F68C23800F5B466 /* IosTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IosTestApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,17 +64,10 @@
 			);
 			sourceTree = "<group>";
 		};
-		1A1A1A3B2A2A2A2B3B3B3B5B /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				1A1A1A3A2A2A2A2B3B3B3B5A /* Local.xcconfig */,
-			);
-			path = Config;
-			sourceTree = "<group>";
-		};
 		1A1A1A192A2A2A2B3B3B3B39 /* IosTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				66F917CA2F68C23800F5B466 /* IosTestApp.entitlements */,
 				1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */,
 				1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */,
 				1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */,
@@ -105,6 +99,14 @@
 				1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1A1A1A3B2A2A2A2B3B3B3B5B /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				1A1A1A3A2A2A2A2B3B3B3B5A /* Local.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,10 +359,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = IosTestApp/IosTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_KEY_UILaunchScreen = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.IosTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -374,10 +377,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = IosTestApp/IosTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_KEY_UILaunchScreen = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.IosTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
