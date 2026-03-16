@@ -1,0 +1,8 @@
+[tools]
+go = "1.25"
+node = "24"
+pnpm = "10"
+goreleaser = "2"
+"golangci-lint" = "2"
+
+[env]
