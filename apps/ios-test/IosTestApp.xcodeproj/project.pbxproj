@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A1A1A1B2A2A2A2B3B3B3B3B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */; };
 		1A1A1A1D2A2A2A2B3B3B3B3D /* IosTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */; };
-		1A1A1A212A2A2A2B3B3B3B41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
+		1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
 		1A1A1A252A2A2A2B3B3B3B45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */; };
 		1A1A1A292A2A2A2B3B3B3B49 /* IosTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A282A2A2A2B3B3B3B48 /* IosTestAppTests.swift */; };
 /* End PBXBuildFile section */
@@ -102,7 +102,7 @@
 /* Begin PBXNativeTarget section */
 		1A1A1A172A2A2A2B3B3B3B37 /* IosTestApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A1A1A302A2A2A2B3B3B3B50 /* Build configuration list for PBXNativeTarget "IosTestApp" */;
+			buildConfigurationList = 1A1A1A382A2A2A2B3B3B3B58 /* Build configuration list for PBXNativeTarget "IosTestApp" */;
 			buildPhases = (
 				1A1A1A142A2A2A2B3B3B3B34 /* Sources */,
 				1A1A1A152A2A2A2B3B3B3B35 /* Frameworks */,
@@ -119,11 +119,11 @@
 		};
 		1A1A1A212A2A2A2B3B3B3B41 /* IosTestAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A1A1A312A2A2A2B3B3B3B51 /* Build configuration list for PBXNativeTarget "IosTestAppTests" */;
+			buildConfigurationList = 1A1A1A392A2A2A2B3B3B3B59 /* Build configuration list for PBXNativeTarget "IosTestAppTests" */;
 			buildPhases = (
 				1A1A1A1E2A2A2A2B3B3B3B3E /* Sources */,
 				1A1A1A1F2A2A2A2B3B3B3B3F /* Frameworks */,
-				1A1A1A202A2A2A2B3B3B3B40 /* Resources */,
+				1A1A1A362A2A2A2B3B3B3B56 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -179,12 +179,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A1A1A212A2A2A2B3B3B3B41 /* Assets.xcassets in Resources */,
+				1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */,
 				1A1A1A252A2A2A2B3B3B3B45 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1A1A1A202A2A2A2B3B3B3B40 /* Resources */ = {
+		1A1A1A362A2A2A2B3B3B3B56 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -404,7 +404,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1A1A1A302A2A2A2B3B3B3B50 /* Build configuration list for PBXNativeTarget "IosTestApp" */ = {
+		1A1A1A382A2A2A2B3B3B3B58 /* Build configuration list for PBXNativeTarget "IosTestApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1A1A1A302A2A2A2B3B3B3B50 /* Debug */,
@@ -413,7 +413,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1A1A1A312A2A2A2B3B3B3B51 /* Build configuration list for PBXNativeTarget "IosTestAppTests" */ = {
+		1A1A1A392A2A2A2B3B3B3B59 /* Build configuration list for PBXNativeTarget "IosTestAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1A1A1A322A2A2A2B3B3B3B52 /* Debug */,
