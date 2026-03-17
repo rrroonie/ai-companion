@@ -1,7 +1,6 @@
 import argparse
 import os
 from typing import TypedDict
-from IPython.display import Image, display
 
 class State(TypedDict):
     input: str
@@ -10,7 +9,7 @@ class State(TypedDict):
 def call_model(state: State):
     prompt = f"Process the following text: {state['input']}"
     response = llm.invoke(prompt)
-    return {"processed_text": response.content}
+    return {"processed_text": response}
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Minimal LangGraph hello example.")
@@ -35,10 +34,10 @@ def parse_args() -> argparse.Namespace:
 if __name__ == "__main__":
     args = parse_args()
 
-    from langchain_openai import ChatOpenAI
+    from langchain_openai import OpenAI
     from langgraph.graph import END, START, StateGraph
 
-    llm = ChatOpenAI(
+    llm = OpenAI(
         base_url=f"http://localhost:{args.port}/v1",
         api_key=os.environ.get("OPENAI_API_KEY", "local-key"),
         model=args.model,
