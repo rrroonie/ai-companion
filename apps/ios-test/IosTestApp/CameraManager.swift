@@ -35,28 +35,28 @@ final class CameraManager: NSObject, ObservableObject {
     }
 
     func startSession() {
-        sessionQueue.async { [weak self] in
-            guard let self else { return }
-            let authorized: Bool
-            switch AVCaptureDevice.authorizationStatus(for: .video) {
-            case .authorized:
-                DispatchQueue.main.async { [weak self] in self?.isAuthorized = true }
-                authorized = true
-            case .notDetermined:
-                authorized = await withCheckedContinuation { cont in
-                    AVCaptureDevice.requestAccess(for: .video) { granted in
-                        DispatchQueue.main.async { [weak self] in
-                            self?.isAuthorized = granted
-                        }
-                        cont.resume(returning: granted)
-                    }
-                }
-            default:
-                authorized = false
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            isAuthorized = true
+            sessionQueue.async { [weak self] in
+                guard let self else { return }
+                configureSession()
+                session.startRunning()
             }
-            guard authorized else { return }
-            configureSession()
-            session.startRunning()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async { [weak self] in
+                    self?.isAuthorized = granted
+                }
+                guard granted, let self else { return }
+                sessionQueue.async { [weak self] in
+                    guard let self else { return }
+                    configureSession()
+                    session.startRunning()
+                }
+            }
+        default:
+            isAuthorized = false
         }
     }
 
@@ -99,6 +99,7 @@ final class CameraManager: NSObject, ObservableObject {
 
     private func createCGImage(from pixelBuffer: CVPixelBuffer) -> CGImage? {
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+            .oriented(.right) // Camera delivers landscape-right; orient upright for portrait display
         let context = CIContext(options: nil)
         return context.createCGImage(ciImage, from: ciImage.extent)
     }
