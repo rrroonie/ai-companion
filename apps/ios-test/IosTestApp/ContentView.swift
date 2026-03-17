@@ -1,3 +1,5 @@
+import CoreImage
+import MLXLMCommon
 import SwiftUI
 import UIKit
 
@@ -5,6 +7,9 @@ struct ContentView: View {
     @ObservedObject var visionModelManager: VisionModelManager
     @StateObject private var cameraManager = CameraManager()
     @State private var capturedImageForSheet: CapturedImageItem?
+    @State private var descriptionForSheet: String?
+    @State private var inferenceErrorForSheet: Error?
+    @State private var isInferringForSheet = false
 
     var body: some View {
         ZStack {
@@ -31,10 +36,20 @@ struct ContentView: View {
             }
         }
         .sheet(item: $capturedImageForSheet) { item in
-            Image(uiImage: UIImage(cgImage: item.cgImage))
-                .resizable()
-                .scaledToFit()
-                .presentationDetents([.medium, .large])
+            CapturedImageSheetView(
+                item: item,
+                visionModelManager: visionModelManager,
+                description: $descriptionForSheet,
+                error: $inferenceErrorForSheet,
+                isInferring: $isInferringForSheet
+            )
+        }
+        .onChange(of: capturedImageForSheet?.id) { _, newId in
+            if newId != nil {
+                descriptionForSheet = nil
+                inferenceErrorForSheet = nil
+                isInferringForSheet = true
+            }
         }
         .onAppear {
             visionModelManager.startLoading()
@@ -56,6 +71,9 @@ struct ContentView: View {
                 Button("Capture") {
                     if let image = cameraManager.captureCurrentFrame() {
                         cameraManager.capturedImage = image
+                        descriptionForSheet = nil
+                        inferenceErrorForSheet = nil
+                        isInferringForSheet = true
                         capturedImageForSheet = CapturedImageItem(cgImage: image)
                     }
                 }
@@ -85,6 +103,71 @@ struct ContentView: View {
 private struct CapturedImageItem: Identifiable {
     let id = UUID()
     let cgImage: CGImage
+}
+
+private struct CapturedImageSheetView: View {
+    let item: CapturedImageItem
+    @ObservedObject var visionModelManager: VisionModelManager
+    @Binding var description: String?
+    @Binding var error: Error?
+    @Binding var isInferring: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Image(uiImage: UIImage(cgImage: item.cgImage))
+                .resizable()
+                .scaledToFit()
+
+            if isInferring {
+                HStack {
+                    ProgressView()
+                    Text("Describing image…")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            } else if let description {
+                Text(description)
+                    .font(.body)
+            } else if let error {
+                Text("Description failed: \(error.localizedDescription)")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+        }
+        .padding()
+        .presentationDetents([.medium, .large])
+        .onAppear {
+            runInferenceIfNeeded()
+        }
+    }
+
+    private func runInferenceIfNeeded() {
+        guard isInferring, description == nil, error == nil,
+              let container = visionModelManager.container else { return }
+
+        let ciImage = CIImage(cgImage: item.cgImage)
+        let session = ChatSession(container)
+
+        Task {
+            do {
+                let result = try await session.respond(
+                    to: "Describe what you see in this image in one or two sentences.",
+                    image: .ciImage(ciImage)
+                )
+                await MainActor.run {
+                    description = result
+                    error = nil
+                    isInferring = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.error = error
+                    description = nil
+                    isInferring = false
+                }
+            }
+        }
+    }
 }
 
 #Preview {
