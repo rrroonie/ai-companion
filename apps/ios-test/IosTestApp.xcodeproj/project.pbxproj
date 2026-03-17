@@ -371,6 +371,7 @@
 				CODE_SIGN_ENTITLEMENTS = IosTestApp/IosTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_RESOURCE_ACCESS_CAMERA = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to capture photos.";
 				INFOPLIST_KEY_UILaunchScreen = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -390,6 +391,7 @@
 				CODE_SIGN_ENTITLEMENTS = IosTestApp/IosTestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_RESOURCE_ACCESS_CAMERA = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to capture photos.";
 				INFOPLIST_KEY_UILaunchScreen = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
