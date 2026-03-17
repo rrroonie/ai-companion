@@ -20,11 +20,13 @@ The app loads an on-device vision-language model (VLM) at startup, then uses it 
 
 ## Components
 
-| Component | Role |
-|-----------|------|
-| **VisionModelManager** | Owns model load via `loadModelContainer`; exposes state (notLoaded / loading / ready(container) / error) and the loaded `ModelContainer`. |
-| **ContentView** | Gates camera on model ready; shows loading/error UI; on Capture, presents sheet and resets inference state. |
-| **CapturedImageSheetView** | Presents captured image; on appear, runs VLM inference via `ChatSession.respond(to:image:)` and shows description or error. |
+
+| Component                  | Role                                                                                                                                      |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **VisionModelManager**     | Owns model load via `loadModelContainer`; exposes state (notLoaded / loading / ready(container) / error) and the loaded `ModelContainer`. |
+| **ContentView**            | Gates camera on model ready; shows loading/error UI; on Capture, presents sheet and resets inference state.                               |
+| **CapturedImageSheetView** | Presents captured image; on appear, runs VLM inference via `ChatSession.respond(to:image:)` and shows description or error.               |
+
 
 ## Model
 
@@ -36,3 +38,4 @@ The app loads an on-device vision-language model (VLM) at startup, then uses it 
 
 - [Camera architecture](camera-architecture.md) – Camera preview and capture.
 - [.cursor/plans/02-vision-model-camera.plan.md](../../.cursor/plans/02-vision-model-camera.plan.md) – Plan and commit points.
+

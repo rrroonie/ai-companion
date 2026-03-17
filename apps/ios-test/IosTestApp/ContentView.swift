@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var descriptionForSheet: String?
     @State private var inferenceErrorForSheet: Error?
     @State private var isInferringForSheet = false
+    @State private var pinchBaseZoom: CGFloat?
 
     var body: some View {
         NavigationStack {
@@ -46,15 +47,6 @@ struct ContentView: View {
                     .padding()
                 }
             }
-            .toolbar {
-                if case .ready = visionModelManager.state {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Reload model") {
-                            visionModelManager.startLoading(forceLoad: true)
-                        }
-                    }
-                }
-            }
         }
         .sheet(item: $capturedImageForSheet) { item in
             CapturedImageSheetView(
@@ -84,22 +76,79 @@ struct ContentView: View {
     @ViewBuilder
     private var cameraContent: some View {
         if cameraManager.isAuthorized {
-            CameraPreviewView(session: cameraManager.session)
-                .ignoresSafeArea()
+            ZStack(alignment: .topTrailing) {
+                CameraPreviewView(session: cameraManager.session)
+                    .simultaneousGesture(
+                        MagnificationGesture()
+                            .onChanged { value in
+                                if pinchBaseZoom == nil {
+                                    pinchBaseZoom = cameraManager.zoomFactor
+                                }
+                                if let base = pinchBaseZoom {
+                                    cameraManager.applyZoomToTarget(base * value)
+                                }
+                            }
+                            .onEnded { _ in
+                                pinchBaseZoom = nil
+                            }
+                    )
+                    .ignoresSafeArea()
 
-            VStack {
-                Spacer()
-                Button("Capture") {
-                    if let image = cameraManager.captureCurrentFrame() {
-                        cameraManager.capturedImage = image
-                        descriptionForSheet = nil
-                        inferenceErrorForSheet = nil
-                        isInferringForSheet = true
-                        capturedImageForSheet = CapturedImageItem(cgImage: image)
+                if case .ready = visionModelManager.state {
+                    Button {
+                        visionModelManager.startLoading(forceLoad: true)
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.title2)
+                            .frame(width: 44, height: 44)
                     }
+                    .buttonStyle(.bordered)
+                    .padding(8)
                 }
-                .buttonStyle(.borderedProminent)
-                .padding(.bottom, 40)
+            }
+            .navigationBarHidden(true)
+
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                HStack(spacing: 40) {
+                    Button {
+                        cameraManager.zoomOut()
+                    } label: {
+                        Image(systemName: "minus.magnifyingglass")
+                            .font(.title2)
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(cameraManager.zoomFactor <= cameraManager.minZoomFactor)
+
+                    Button {
+                        if let image = cameraManager.captureCurrentFrame() {
+                            cameraManager.capturedImage = image
+                            descriptionForSheet = nil
+                            inferenceErrorForSheet = nil
+                            isInferringForSheet = true
+                            capturedImageForSheet = CapturedImageItem(cgImage: image)
+                        }
+                    } label: {
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 28))
+                            .frame(width: 64, height: 64)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .clipShape(Circle())
+
+                    Button {
+                        cameraManager.zoomIn()
+                    } label: {
+                        Image(systemName: "plus.magnifyingglass")
+                            .font(.title2)
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(cameraManager.zoomFactor >= cameraManager.maxZoomFactor)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(.ultraThinMaterial)
             }
             .onAppear {
                 cameraManager.startSession()
