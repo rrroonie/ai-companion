@@ -37,6 +37,7 @@ next-env.d.ts
 
 # iOS / Xcode
 apps/ios-test/Config/Local.xcconfig
+apps/ios-test/build/
 xcuserdata/
 *.xcuserstate
 DerivedData/
