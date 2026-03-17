@@ -16,6 +16,7 @@
 		1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
 		66F918B52F68D9BB00F5B466 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 66F918B42F68D9BB00F5B466 /* MLXLMCommon */; };
 		66F918B72F68D9BB00F5B466 /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 66F918B62F68D9BB00F5B466 /* MLXVLM */; };
+		66F918C12F68D9CC00F5B466 /* VisionModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F918C02F68D9CC00F5B466 /* VisionModelManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		66F917CA2F68C23800F5B466 /* IosTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IosTestApp.entitlements; sourceTree = "<group>"; };
 		66F917D02F68C23900F5B470 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		66F917D22F68C23900F5B472 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		66F918C02F68D9CC00F5B466 /* VisionModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionModelManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */,
 				66F917D02F68C23900F5B470 /* CameraManager.swift */,
 				66F917D22F68C23900F5B472 /* CameraPreviewView.swift */,
+				66F918C02F68D9CC00F5B466 /* VisionModelManager.swift */,
 				1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */,
 				1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */,
 				1A1A1A272A2A2A2B3B3B3B47 /* Preview Content */,
@@ -226,6 +229,7 @@
 				66F917D12F68C23900F5B470 /* CameraManager.swift in Sources */,
 				66F917D32F68C23900F5B472 /* CameraPreviewView.swift in Sources */,
 				1A1A1A1B2A2A2A2B3B3B3B3B /* ContentView.swift in Sources */,
+				66F918C12F68D9CC00F5B466 /* VisionModelManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
