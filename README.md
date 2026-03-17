@@ -3,12 +3,13 @@
 - Install `mise`
 - Run `mise install`
 
-## Mac llama.cpp setup
+## Mac llama.cpp setup 
 We have a simple download and build script
 `%> ./tools/llamacpp/download-build.sh`
 It will build and install it in the ~/llama.cpp directory
 
 To download a model use `hf`
+*Note: Still working on this because of downloading from HuggingFace via CLI needs auth & scopes*
 ```
 brew install hf
 hf download --local-dir ~/models/hf meta-llama/Llama-3.2-3B-Instruct
@@ -58,3 +59,9 @@ Freeze Your Environment
 uv pip freeze > ~/vllm-metal-setup/requirements-frozen.txt
 shasum -a 256 ~/vllm-metal-setup/requirements-frozen.txt > ~/vllm-metal-setup/requirements-frozen.sha256
 ```
+
+## Setting up LangChain and LangGraph
+Make sure using the right python via mise
+
+Use pip to install
+`pip install langgraph langchain-openai`
