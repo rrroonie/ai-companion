@@ -8,12 +8,14 @@ We have a simple download and build script
 `%> ./tools/llamacpp/download-build.sh`
 It will build and install it in the ~/llama.cpp directory
 
-To download a model use `hf`
-*Note: Still working on this because of downloading from HuggingFace via CLI needs auth & scopes*
+This uses a huggingface module internally. Set a cache directory and download workers
 ```
-brew install hf
-hf download --local-dir ~/models/hf meta-llama/Llama-3.2-3B-Instruct
+export LLAMA_CACHE=~/models/hf
+export HF_HUB_DOWNLOAD_MAX_WORKERS=8
 ```
+
+Then you can start up llamacpp server like this (note do on a 48GB RAM M4 Pro)
+`llama-server -hf Qwen/Qwen2.5-32B-Instruct-GGUF:Q5_K_M --port 8111 -ngl 99`
 
 ## Mac vLLM-Metal setup
 ### [Copy of setup instructions from Michael Hannecke](https://medium.com/@michael.hannecke/hands-on-vllm-metal-on-mac-studio-m4-6263062c8c2d)
@@ -66,7 +68,44 @@ We just need the model name and the port
 
 For example: `./tools/vllm/serve 8111 mlx-community/Llama-3.2-3B-8bit`
 
-It will download if it's not there and eventually be ready to startup
+It will download if it's not there and eventually be ready to startup. Should see something like
+```
+(APIServer pid=75553) INFO:     Waiting for application startup.
+(APIServer pid=75553) INFO:     Application startup complete.
+```
+Test it by doing `curl http://localhost:8111/health` or `curl http://localhost:8111/v1/models`. Change the hostname and port as needed. For health and models you should see `200 OK` logged by vllm. For the model call you should see JSON output like
+```
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "mlx-community/Llama-3.2-3B-bf16",
+      "object": "model",
+      "created": 1773731221,
+      "owned_by": "vllm",
+      "root": "mlx-community/Llama-3.2-3B-bf16",
+      "parent": null,
+      "max_model_len": 131072,
+      "permission": [
+        {
+          "id": "modelperm-83ab6dea8fe01e9e",
+          "object": "model_permission",
+          "created": 1773731221,
+          "allow_create_engine": false,
+          "allow_sampling": true,
+          "allow_logprobs": true,
+          "allow_search_indices": false,
+          "allow_view": true,
+          "allow_fine_tuning": false,
+          "organization": "*",
+          "group": null,
+          "is_blocking": false
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Setting up LangChain and LangGraph
 Make sure using the right python via mise
