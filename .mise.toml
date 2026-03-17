@@ -4,5 +4,6 @@ node = "24"
 pnpm = "10"
 goreleaser = "2"
 "golangci-lint" = "2"
+python = "3.12"
 
 [env]
