@@ -12,6 +12,8 @@
 		1A1A1A252A2A2A2B3B3B3B45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */; };
 		1A1A1A292A2A2A2B3B3B3B49 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		1A1A1A372A2A2A2B3B3B3B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */; };
+		66F918B52F68D9BB00F5B466 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 66F918B42F68D9BB00F5B466 /* MLXLMCommon */; };
+		66F918B72F68D9BB00F5B466 /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 66F918B62F68D9BB00F5B466 /* MLXVLM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66F918B72F68D9BB00F5B466 /* MLXVLM in Frameworks */,
+				66F918B52F68D9BB00F5B466 /* MLXLMCommon in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +180,7 @@
 			);
 			mainGroup = 1A1A1A0F2A2A2A2B3B3B3B2F;
 			packageReferences = (
+				66F918B32F68D9BB00F5B466 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */,
 			);
 			productRefGroup = 1A1A1A192A2A2A2B3B3B3B3E /* Products */;
 			projectDirPath = "";
@@ -270,6 +275,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SFQ452SECF;
 				ENABLE_RESOURCE_ACCESS_CAMERA = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -289,7 +295,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -334,6 +340,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SFQ452SECF;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_RESOURCE_ACCESS_CAMERA = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -347,7 +354,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -367,7 +374,7 @@
 				INFOPLIST_KEY_UILaunchScreen = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.IosTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -386,7 +393,7 @@
 				INFOPLIST_KEY_UILaunchScreen = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.IosTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -448,6 +455,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		66F918B32F68D9BB00F5B466 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-lm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.30.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		66F918B42F68D9BB00F5B466 /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66F918B32F68D9BB00F5B466 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLMCommon;
+		};
+		66F918B62F68D9BB00F5B466 /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66F918B32F68D9BB00F5B466 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXVLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A1A1A102A2A2A2B3B3B3B30 /* Project object */;
 }
