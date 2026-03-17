@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var isInferringForSheet = false
     @State private var pinchBaseZoom: CGFloat?
     @State private var isShowingSettings = false
+    @State private var liveDescription: String?
+    @State private var isPeriodicInferring = false
 
     var body: some View {
         NavigationStack {
@@ -79,6 +81,9 @@ struct ContentView: View {
         }
         .onDisappear {
             cameraManager.stopSession()
+        }
+        .task(id: visionModelManager.periodicMode) {
+            await runPeriodicLoop()
         }
     }
 
@@ -180,6 +185,29 @@ struct ContentView: View {
                     .padding(.vertical, 8)
                 }
                 .ignoresSafeArea(edges: .all)
+
+                // Periodic description overlay
+                if let text = liveDescription {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            if isPeriodicInferring {
+                                ProgressView()
+                                    .scaleEffect(0.7)
+                            }
+                            Text(text)
+                                .font(.footnote)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                        }
+                        .padding(8)
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding(.bottom, 64)
+                        .padding(.horizontal, 16)
+                    }
+                    .transition(.opacity)
+                }
             }
             .onAppear {
                 cameraManager.startSession()
@@ -197,6 +225,54 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
             }
             .padding()
+        }
+    }
+
+    private func runPeriodicLoop() async {
+        while !Task.isCancelled {
+            guard
+                let interval = visionModelManager.periodicInterval,
+                visionModelManager.container != nil,
+                cameraManager.isAuthorized,
+                let container = visionModelManager.container
+            else {
+                try? await Task.sleep(nanoseconds: 1_000_000_000) // check roughly every second when inactive
+                continue
+            }
+
+            if isPeriodicInferring {
+                try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                continue
+            }
+
+            guard let cgImage = cameraManager.captureCurrentFrame() else {
+                try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+                continue
+            }
+
+            await MainActor.run {
+                isPeriodicInferring = true
+            }
+
+            let ciImage = CIImage(cgImage: cgImage)
+            let session = ChatSession(container)
+
+            do {
+                let result = try await session.respond(
+                    to: "Briefly describe what you see in this image.",
+                    image: .ciImage(ciImage)
+                )
+                await MainActor.run {
+                    liveDescription = result
+                    isPeriodicInferring = false
+                }
+            } catch {
+                await MainActor.run {
+                    isPeriodicInferring = false
+                }
+            }
+
+            try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
         }
     }
 }
@@ -298,6 +374,20 @@ struct SettingsView: View {
                     Button("Apply and reload model") {
                         isShowingReloadAlert = true
                     }
+                }
+
+                Section("Periodic description") {
+                    Picker("Frequency", selection: Binding(
+                        get: { visionModelManager.periodicMode },
+                        set: { visionModelManager.setPeriodicMode($0) }
+                    )) {
+                        Text("Off").tag(VisionModelManager.PeriodicMode.off)
+                        Text("Every 2 seconds").tag(VisionModelManager.PeriodicMode.every2s)
+                        Text("Every 4 seconds").tag(VisionModelManager.PeriodicMode.every4s)
+                        Text("Every 6 seconds").tag(VisionModelManager.PeriodicMode.every6s)
+                        Text("Every 8 seconds").tag(VisionModelManager.PeriodicMode.every8s)
+                    }
+                    .pickerStyle(.inline)
                 }
             }
             .navigationTitle("Settings")

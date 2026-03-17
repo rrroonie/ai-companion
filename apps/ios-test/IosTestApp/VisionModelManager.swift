@@ -13,6 +13,14 @@ final class VisionModelManager: ObservableObject {
         case error(Error)
     }
 
+    enum PeriodicMode: String, CaseIterable, Sendable {
+        case off
+        case every2s
+        case every4s
+        case every6s
+        case every8s
+    }
+
     struct VisionModel: Identifiable, Equatable {
         let id: String
         let displayName: String
@@ -26,6 +34,14 @@ final class VisionModelManager: ObservableObject {
             id: "qwen2-vl-2b-instruct-4bit",
             displayName: "Qwen2-VL-2B-Instruct-4bit",
             configuration: VLMRegistry.qwen2VL2BInstruct4Bit
+        ),
+        .init(
+            id: "moondream2-4bit",
+            displayName: "Moondream2-4bit",
+            configuration: ModelConfiguration(
+                id: "mlx-community/moondream2-4bit",
+                defaultPrompt: "Describe the image in English."
+            )
         ),
         .init(
             id: "fastvlm-0.5b",
@@ -44,21 +60,40 @@ final class VisionModelManager: ObservableObject {
 
     @Published private(set) var availableModels: [VisionModel] = defaultModels
 
-    private let defaultsKey = "vision.selectedModelID"
+    private let defaultsKeyModel = "vision.selectedModelID"
+    private let defaultsKeyPeriodic = "vision.periodicMode"
 
     @Published var selectedModelID: String
+    @Published var periodicMode: PeriodicMode
 
     var currentModel: VisionModel {
         availableModels.first(where: { $0.id == selectedModelID }) ?? availableModels[0]
     }
 
+    var periodicInterval: TimeInterval? {
+        switch periodicMode {
+        case .off: return nil
+        case .every2s: return 2
+        case .every4s: return 4
+        case .every6s: return 6
+        case .every8s: return 8
+        }
+    }
+
     init() {
         let models = Self.defaultModels
-        let stored = UserDefaults.standard.string(forKey: defaultsKey)
+        let stored = UserDefaults.standard.string(forKey: defaultsKeyModel)
         if let stored, models.contains(where: { $0.id == stored }) {
             selectedModelID = stored
         } else {
             selectedModelID = models[0].id
+        }
+
+        if let periodicRaw = UserDefaults.standard.string(forKey: defaultsKeyPeriodic),
+           let savedMode = PeriodicMode(rawValue: periodicRaw) {
+            periodicMode = savedMode
+        } else {
+            periodicMode = .off
         }
     }
 
@@ -71,6 +106,12 @@ final class VisionModelManager: ObservableObject {
     func unloadAndReloadSelected(forceDownload: Bool = false) {
         state = .notLoaded
         startLoading(forceLoad: forceDownload)
+    }
+
+    /// Persist periodic mode changes.
+    func setPeriodicMode(_ mode: PeriodicMode) {
+        periodicMode = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: defaultsKeyPeriodic)
     }
 
     /// Call from view's onAppear to start download/load.
