@@ -12,27 +12,48 @@ struct ContentView: View {
     @State private var isInferringForSheet = false
 
     var body: some View {
-        ZStack {
-            switch visionModelManager.state {
-            case .notLoaded, .loading:
-                VStack(spacing: 16) {
-                    ProgressView()
-                    Text("Downloading/loading vision model…")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+        NavigationStack {
+            ZStack {
+                switch visionModelManager.state {
+                case .notLoaded, .loading:
+                    VStack(spacing: 16) {
+                        ProgressView()
+                        Text("Downloading/loading vision model…")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                case .ready:
+                    cameraContent
+                case .error(let error):
+                    VStack(spacing: 16) {
+                        Text("Model failed to load")
+                            .font(.headline)
+                        Text(error.localizedDescription)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        HStack(spacing: 12) {
+                            Button("Retry") {
+                                visionModelManager.startLoading()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            Button("Force reload") {
+                                visionModelManager.startLoading(forceLoad: true)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                    .padding()
                 }
-            case .ready:
-                cameraContent
-            case .error(let error):
-                VStack(spacing: 16) {
-                    Text("Model failed to load")
-                        .font(.headline)
-                    Text(error.localizedDescription)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
+            }
+            .toolbar {
+                if case .ready = visionModelManager.state {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Reload model") {
+                            visionModelManager.startLoading(forceLoad: true)
+                        }
+                    }
                 }
-                .padding()
             }
         }
         .sheet(item: $capturedImageForSheet) { item in
@@ -117,21 +138,30 @@ private struct CapturedImageSheetView: View {
             Image(uiImage: UIImage(cgImage: item.cgImage))
                 .resizable()
                 .scaledToFit()
+                .frame(maxHeight: 280)
 
-            if isInferring {
-                HStack {
-                    ProgressView()
-                    Text("Describing image…")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            ScrollView {
+                Group {
+                    if isInferring {
+                        HStack {
+                            ProgressView()
+                            Text("Describing image…")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    } else if let description {
+                        Text(description)
+                            .font(.subheadline)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else if let error {
+                        Text("Description failed: \(error.localizedDescription)")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
-            } else if let description {
-                Text(description)
-                    .font(.body)
-            } else if let error {
-                Text("Description failed: \(error.localizedDescription)")
-                    .font(.caption)
-                    .foregroundStyle(.red)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
             }
         }
         .padding()
