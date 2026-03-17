@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		66F917D12F68C23900F5B470 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F917D02F68C23900F5B470 /* CameraManager.swift */; };
+		66F917D32F68C23900F5B472 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F917D22F68C23900F5B472 /* CameraPreviewView.swift */; };
 		1A1A1A1B2A2A2A2B3B3B3B3B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */; };
 		1A1A1A1D2A2A2A2B3B3B3B3D /* IosTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */; };
 		1A1A1A252A2A2A2B3B3B3B45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1A1A242A2A2A2B3B3B3B44 /* Preview Assets.xcassets */; };
@@ -38,6 +39,7 @@
 		1A1A1A3A2A2A2A2B3B3B3B5A /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
 		66F917CA2F68C23800F5B466 /* IosTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IosTestApp.entitlements; sourceTree = "<group>"; };
 		66F917D02F68C23900F5B470 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		66F917D22F68C23900F5B472 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				66F917CA2F68C23800F5B466 /* IosTestApp.entitlements */,
 				1A1A1A1C2A2A2A2B3B3B3B3C /* IosTestAppApp.swift */,
 				66F917D02F68C23900F5B470 /* CameraManager.swift */,
+				66F917D22F68C23900F5B472 /* CameraPreviewView.swift */,
 				1A1A1A1A2A2A2A2B3B3B3B3A /* ContentView.swift */,
 				1A1A1A202A2A2A2B3B3B3B40 /* Assets.xcassets */,
 				1A1A1A272A2A2A2B3B3B3B47 /* Preview Content */,
@@ -221,6 +224,7 @@
 			files = (
 				1A1A1A1D2A2A2A2B3B3B3B3D /* IosTestAppApp.swift in Sources */,
 				66F917D12F68C23900F5B470 /* CameraManager.swift in Sources */,
+				66F917D32F68C23900F5B472 /* CameraPreviewView.swift in Sources */,
 				1A1A1A1B2A2A2A2B3B3B3B3B /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
