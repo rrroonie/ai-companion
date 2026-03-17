@@ -11,39 +11,45 @@ struct ContentView: View {
     @State private var inferenceErrorForSheet: Error?
     @State private var isInferringForSheet = false
     @State private var pinchBaseZoom: CGFloat?
+    @State private var isShowingSettings = false
 
     var body: some View {
         NavigationStack {
             ZStack {
-                switch visionModelManager.state {
-                case .notLoaded, .loading:
-                    VStack(spacing: 16) {
+                // Always show camera when authorized; overlay model status on top.
+                cameraContent
+
+                if case .loading = visionModelManager.state {
+                    VStack(spacing: 8) {
                         ProgressView()
-                        Text("Downloading/loading vision model…")
-                            .font(.subheadline)
+                        Text("Loading vision model…")
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                case .ready:
-                    cameraContent
-                case .error(let error):
-                    VStack(spacing: 16) {
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.top, 50)
+                }
+
+                if case .error(let error) = visionModelManager.state {
+                    VStack(spacing: 8) {
                         Text("Model failed to load")
                             .font(.headline)
                         Text(error.localizedDescription)
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                        HStack(spacing: 12) {
-                            Button("Retry") {
-                                visionModelManager.startLoading()
-                            }
-                            .buttonStyle(.borderedProminent)
-                            Button("Force reload") {
-                                visionModelManager.startLoading(forceLoad: true)
-                            }
-                            .buttonStyle(.bordered)
+                        Button("Dismiss") {
+                            // Let the user continue with camera only.
+                            // Reset state so the overlay disappears; model is simply not loaded.
+                            visionModelManager.resetState()
                         }
+                        .buttonStyle(.bordered)
                     }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding()
                 }
             }
@@ -57,6 +63,9 @@ struct ContentView: View {
                 isInferring: $isInferringForSheet
             )
         }
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView(visionModelManager: visionModelManager)
+        }
         .onChange(of: capturedImageForSheet?.id) { _, newId in
             if newId != nil {
                 descriptionForSheet = nil
@@ -65,7 +74,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            visionModelManager.startLoading()
+            // Only set up camera permissions on launch; model loading is user-initiated from Settings.
             cameraManager.checkPermission()
         }
         .onDisappear {
@@ -76,79 +85,101 @@ struct ContentView: View {
     @ViewBuilder
     private var cameraContent: some View {
         if cameraManager.isAuthorized {
-            ZStack(alignment: .topTrailing) {
-                CameraPreviewView(session: cameraManager.session)
-                    .simultaneousGesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                if pinchBaseZoom == nil {
-                                    pinchBaseZoom = cameraManager.zoomFactor
-                                }
-                                if let base = pinchBaseZoom {
-                                    cameraManager.applyZoomToTarget(base * value)
-                                }
-                            }
-                            .onEnded { _ in
-                                pinchBaseZoom = nil
-                            }
-                    )
-                    .ignoresSafeArea()
+            ZStack {
+                Color.black.ignoresSafeArea()
 
-                if case .ready = visionModelManager.state {
-                    Button {
-                        visionModelManager.startLoading(forceLoad: true)
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
-                            .font(.title2)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.bordered)
-                    .padding(8)
-                }
-            }
-            .navigationBarHidden(true)
-
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                HStack(spacing: 40) {
-                    Button {
-                        cameraManager.zoomOut()
-                    } label: {
-                        Image(systemName: "minus.magnifyingglass")
-                            .font(.title2)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(cameraManager.zoomFactor <= cameraManager.minZoomFactor)
-
-                    Button {
-                        if let image = cameraManager.captureCurrentFrame() {
-                            cameraManager.capturedImage = image
-                            descriptionForSheet = nil
-                            inferenceErrorForSheet = nil
-                            isInferringForSheet = true
-                            capturedImageForSheet = CapturedImageItem(cgImage: image)
+                VStack(spacing: 0) {
+                    // Top controls (in their own row)
+                    HStack {
+                        Button {
+                            isShowingSettings = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                                .font(.headline)
+                                .frame(width: 28, height: 28)
                         }
-                    } label: {
-                        Image(systemName: "camera.fill")
-                            .font(.system(size: 28))
-                            .frame(width: 64, height: 64)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .clipShape(Circle())
+                        .buttonStyle(.bordered)
+                        .padding(.leading, 8)
+                        .padding(.top, 8)
 
-                    Button {
-                        cameraManager.zoomIn()
-                    } label: {
-                        Image(systemName: "plus.magnifyingglass")
-                            .font(.title2)
-                            .frame(width: 44, height: 44)
+                        Spacer()
+
+                        if case .ready = visionModelManager.state {
+                            Button {
+                                visionModelManager.startLoading(forceLoad: true)
+                            } label: {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(.headline)
+                                    .frame(width: 28, height: 28)
+                            }
+                            .buttonStyle(.bordered)
+                            .padding(.trailing, 8)
+                            .padding(.top, 8)
+                        }
                     }
-                    .buttonStyle(.bordered)
-                    .disabled(cameraManager.zoomFactor >= cameraManager.maxZoomFactor)
+
+                    // Camera preview takes the remaining vertical space
+                    GeometryReader { proxy in
+                        CameraPreviewView(session: cameraManager.session)
+                            .simultaneousGesture(
+                                MagnificationGesture()
+                                    .onChanged { value in
+                                        if pinchBaseZoom == nil {
+                                            pinchBaseZoom = cameraManager.zoomFactor
+                                        }
+                                        if let base = pinchBaseZoom {
+                                            cameraManager.applyZoomToTarget(base * value)
+                                        }
+                                    }
+                                    .onEnded { _ in
+                                        pinchBaseZoom = nil
+                                    }
+                            )
+                            .frame(width: proxy.size.width, height: proxy.size.height)
+                            .clipped()
+                    }
+
+                    // Bottom controls (own row)
+                    HStack(spacing: 24) {
+                        Button {
+                            cameraManager.zoomOut()
+                        } label: {
+                            Image(systemName: "minus.magnifyingglass")
+                                .font(.headline)
+                                .frame(width: 30, height: 30)
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(cameraManager.zoomFactor <= cameraManager.minZoomFactor)
+
+                        Button {
+                            if let image = cameraManager.captureCurrentFrame() {
+                                cameraManager.capturedImage = image
+                                descriptionForSheet = nil
+                                inferenceErrorForSheet = nil
+                                isInferringForSheet = true
+                                capturedImageForSheet = CapturedImageItem(cgImage: image)
+                            }
+                        } label: {
+                            Image(systemName: "camera.fill")
+                                .font(.system(size: 22))
+                                .frame(width: 52, height: 52)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .clipShape(Circle())
+
+                        Button {
+                            cameraManager.zoomIn()
+                        } label: {
+                            Image(systemName: "plus.magnifyingglass")
+                                .font(.headline)
+                                .frame(width: 30, height: 30)
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(cameraManager.zoomFactor >= cameraManager.maxZoomFactor)
+                    }
+                    .padding(.vertical, 8)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(.ultraThinMaterial)
+                .ignoresSafeArea(edges: .all)
             }
             .onAppear {
                 cameraManager.startSession()
@@ -245,6 +276,64 @@ private struct CapturedImageSheetView: View {
                     isInferring = false
                 }
             }
+        }
+    }
+}
+
+struct SettingsView: View {
+    @ObservedObject var visionModelManager: VisionModelManager
+    @Environment(\.dismiss) private var dismiss
+    @State private var isShowingReloadAlert = false
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section("Vision model") {
+                    ForEach(visionModelManager.availableModels, id: \.id) { model in
+                        modelRow(for: model)
+                    }
+                }
+
+                Section {
+                    Button("Apply and reload model") {
+                        isShowingReloadAlert = true
+                    }
+                }
+            }
+            .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+            
+        .alert("Reload model?", isPresented: $isShowingReloadAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Reload", role: .destructive) {
+                visionModelManager.unloadAndReloadSelected(forceDownload: true)
+            }
+        } message: {
+            Text("This will unload the current model and load the selected one. This may take a little while.")
+        }
+    }
+
+
+    @ViewBuilder
+    private func modelRow(for model: VisionModelManager.VisionModel) -> some View {
+        HStack {
+            Text(model.displayName)
+            Spacer()
+            if model.id == visionModelManager.selectedModelID {
+                Image(systemName: "checkmark")
+                    .foregroundStyle(.tint)
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            visionModelManager.selectedModelID = model.id
         }
     }
 }
