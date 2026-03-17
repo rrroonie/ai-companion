@@ -60,6 +60,14 @@ uv pip freeze > ~/vllm-metal-setup/requirements-frozen.txt
 shasum -a 256 ~/vllm-metal-setup/requirements-frozen.txt > ~/vllm-metal-setup/requirements-frozen.sha256
 ```
 
+## Serving a model
+We just need the model name and the port
+`%> ./tools/vllm/serve.sh <port> <model>`
+
+For example: `./tools/vllm/serve 8111 mlx-community/Llama-3.2-3B-8bit`
+
+It will download if it's not there and eventually be ready to startup
+
 ## Setting up LangChain and LangGraph
 Make sure using the right python via mise
 
