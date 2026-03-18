@@ -14,6 +14,7 @@ export LLAMA_CACHE=~/models/hf
 export HF_HUB_DOWNLOAD_MAX_WORKERS=8
 ```
 
+### Serving a model
 Then you can start up llamacpp server like this (note do on a 48GB RAM M4 Pro)
 `llama-server -hf Qwen/Qwen2.5-32B-Instruct-GGUF:Q5_K_M --port 8111 -ngl 99`
 
@@ -62,7 +63,7 @@ uv pip freeze > ~/vllm-metal-setup/requirements-frozen.txt
 shasum -a 256 ~/vllm-metal-setup/requirements-frozen.txt > ~/vllm-metal-setup/requirements-frozen.sha256
 ```
 
-## Serving a model
+### Serving a model
 We just need the model name and the port
 `%> ./tools/vllm/serve.sh <port> <model>`
 
