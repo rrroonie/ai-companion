@@ -2,3 +2,6 @@ langgraph
 langchain-openai
 ipython
 grandalf
+fastapi
+pydantic
+uvicorn
