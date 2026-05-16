@@ -113,3 +113,5 @@ Make sure using the right python via mise
 
 Use pip to install
 `pip install langgraph langchain-openai`
+
+
