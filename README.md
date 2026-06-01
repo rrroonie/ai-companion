@@ -3,8 +3,6 @@
 - Install `mise`
 - Run `mise install`
 
-
-
 ## Mac llama.cpp setup 
 We have a simple download and build script
 `%> ./tools/llamacpp/download-build.sh`
